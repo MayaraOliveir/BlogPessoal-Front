@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import type Tema from "../../../models/Tema";
 import { atualizar, buscar, cadastrar } from "../../../services/Service";
+import { ToastAlert } from "../../../utils/ToastAlerta";
 function FormTema() {
 
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ function FormTema() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado!')
+          
             navigate('/')
         }
     }, [token])
@@ -63,13 +64,14 @@ function FormTema() {
                 await atualizar(`/temas`, tema, setTema, {
                     headers: { 'Authorization': token }
                 })
-                alert('O Tema foi atualizado com sucesso!')
+                
+              ToastAlert("Tema atualizado com sucesso", "sucesso")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao atualizar o tema.')
+                    ToastAlert("Erro ao atualizar tema", "erro")
                 }
 
             }
@@ -78,13 +80,13 @@ function FormTema() {
                 await cadastrar(`/temas`, tema, setTema, {
                     headers: { 'Authorization': token }
                 })
-                alert('O Tema foi cadastrado com sucesso!')
+            ToastAlert("Tema cadastrado com sucesso", "sucesso")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao cadastrar o tema.')
+                  ToastAlert("Erro ao cadastrar tema, verifique os dados", "erro")
                 }
 
             }

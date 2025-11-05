@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -5,6 +6,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import type Postagem from "../../../models/Postagem";
 import type Tema from "../../../models/Tema";
 import { atualizar, buscar, cadastrar } from "../../../services/Service";
+import { ToastAlert } from "../../../utils/ToastAlerta";
 
 function FormPostagem() {
     
@@ -60,7 +62,7 @@ function FormPostagem() {
 
     useEffect(() => { //Verifica se o usuário está logado 
         if (token === '') { // caso não esteja ou não tenha token ele manda para o login atraves do (navigate('/'))
-            alert('Você precisa estar logado');
+             ToastAlert("Você precisa está logado", "info")
             navigate('/');
         }
     }, [token])
@@ -107,13 +109,14 @@ function FormPostagem() {
                     },
                 });
 
-                alert('Postagem atualizada com sucesso')
+                  ToastAlert("Postagem atualizada com sucesso!", "sucesso")
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout()
                 } else {
-                    alert('Erro ao atualizar a Postagem')
+                      ToastAlert("Erro ao atualizar postagem", "erro")
                 }
             }
             // se não tem id cria a postagem!
@@ -125,13 +128,13 @@ function FormPostagem() {
                     },
                 })
 
-                alert('Postagem cadastrada com sucesso');
+                 ToastAlert("Postagem cadastrada com sucesso.", "sucesso")
 
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout()
                 } else {
-                    alert('Erro ao cadastrar a Postagem');
+                     ToastAlert("erro ao cadastrar postagem.", "erro")
                 }
             }
         }
